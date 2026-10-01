@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff1d6">
+  <title>Nana's Food | Delivery com gosto caseiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="#inicio" class="brand"><img src="assets/logo-nanas.png" alt="Nana's Food"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu">☰</button>
+      <nav class="nav">
+        <a href="#inicio">Início</a><a href="#cardapio">Cardápio</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a>
+      </nav>
+      <div class="top-actions">
+        <span class="store-pill loading" id="storePill">Verificando loja...</span>
+        <a class="icon-btn instagram-link" href="#" target="_blank" rel="noopener">◎</a>
+        <button class="cart-button" id="openCart" type="button">Pedido <span class="cart-count" id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="store-banner" id="storeBanner" hidden></div>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">NANA'S FOOD • DELIVERY</span>
+          <h1>Cachorro-quente<br><em>com gosto caseiro!</em></h1>
+          <p>Ingredientes caprichados, muito sabor e aquele tempero de casa que dá vontade de repetir.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#cardapio">Montar meu pedido</a>
+            <a class="btn btn-secondary instagram-link" href="#" target="_blank" rel="noopener">Ver Instagram</a>
+          </div>
+          <div class="benefits">
+            <div><strong>🚚</strong><span>Entrega com<br>consulta por CEP</span></div>
+            <div><strong>♥</strong><span>Feito com<br>carinho</span></div>
+            <div><strong>★</strong><span>Raio de até<br>4,5 km</span></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img src="assets/doguinho.jpg" alt="Hot dog Nana's Food">
+          <div class="hero-card-copy"><span>Imagem ilustrativa</span><strong>Hot dog Nana's Food</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cardapio">
+      <div class="section-heading">
+        <div><span class="mini-title">ESCOLHA O SEU</span><h2>Nosso <em>Cardápio</em></h2><p>Escolha o sabor, os condimentos, adicionais e escreva sua observação.</p></div>
+        <button class="btn btn-dark" id="openCartInline" type="button">Ver meu pedido</button>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+      <div class="future-heading" id="futureHeading"><span class="mini-title">NOVIDADES PLANEJADAS</span><h2>Sabores <em>em breve</em></h2></div>
+      <div class="menu-grid" id="futureGrid"></div>
+    </section>
+
+    <section class="order-banner">
+      <div><span class="mini-title light">PEDIDO PERSONALIZADO</span><h2>Seu dog, do seu jeito.</h2><p>Monte o pedido e finalize direto no WhatsApp.</p></div>
+      <button class="btn btn-yellow" id="openCartBanner" type="button">Continuar pedido →</button>
+    </section>
+
+    <section class="section about" id="sobre">
+      <div class="about-photo"><img src="assets/doguinho.jpg" alt="Hot dog Nana's Food"></div>
+      <div class="about-copy"><span class="mini-title">SOBRE A NANA'S</span><h2>Delivery com <em>gosto caseiro</em></h2><p>A Nana's Food foi pensada para entregar um cachorro-quente caprichado, com cuidado do preparo à embalagem. O raio de 4,5 km ajuda a preservar a qualidade do lanche até a chegada.</p></div>
+    </section>
+
+    <section class="section contact-grid" id="contato">
+      <article class="contact-card"><span class="mini-title">INSTAGRAM</span><h2>Acompanhe a <em>Nana's</em></h2><p>Novidades, bastidores e lançamentos.</p><a class="btn btn-dark instagram-link" href="#" target="_blank" rel="noopener">Abrir Instagram</a></article>
+      <article class="contact-card contact-card-red"><span class="mini-title light">WHATSAPP</span><h2>Finalize seu <em>pedido</em></h2><p>Seu pedido completo é organizado e enviado pelo WhatsApp.</p><button class="btn btn-yellow" id="openCartContact" type="button">Abrir pedido</button></article>
+    </section>
+  </main>
+
+  <footer><div class="footer-inner"><img src="assets/logo-nanas.png" alt="Nana's Food"><div><strong>Nana's Food</strong><p>Sabor que dá vontade de repetir!</p></div><div class="footer-links"><a href="#cardapio">Cardápio</a><a class="instagram-link" href="#" target="_blank" rel="noopener">Instagram</a><a href="admin/">Admin</a></div></div></footer>
+
+  <button class="floating-cart" id="floatingCart" type="button">🛒 <span id="floatingCartCount">0</span></button>
+
+  <div class="modal" id="itemModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="itemModal"></div>
+    <section class="modal-panel product-modal">
+      <button class="modal-close" type="button" data-close-modal="itemModal">×</button>
+      <span class="mini-title">PERSONALIZE SEU LANCHE</span>
+      <h2 id="itemModalTitle">Produto</h2><p class="modal-ingredients" id="itemModalIngredients"></p>
+      <div class="form-row two"><label>Quantidade<input id="itemQty" type="number" min="1" max="20" value="1"></label><div class="price-note"><span>Preço</span><strong id="itemPrice">A confirmar</strong></div></div>
+      <fieldset class="condiments-fieldset"><legend>Condimentos</legend><p class="fieldset-help">Marque somente os condimentos que deseja.</p><div class="condiments-grid" id="condimentsGrid"></div></fieldset>
+      <fieldset class="addons-fieldset"><legend>Adicionais</legend><div class="addons-grid" id="addonsGrid"></div></fieldset>
+      <label class="field-block">Observação do cliente<textarea id="itemNote" rows="4" maxlength="300" placeholder="Ex.: sem milho, caprichar no molho..."></textarea></label>
+      <button class="btn btn-primary full" id="addToCart" type="button">Adicionar ao pedido</button>
+    </section>
+  </div>
+
+  <div class="modal" id="cartModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal="cartModal"></div>
+    <section class="modal-panel cart-modal-panel">
+      <button class="modal-close" type="button" data-close-modal="cartModal">×</button>
+      <div class="cart-header"><div><span class="mini-title">SEU PEDIDO</span><h2>Confira antes de enviar</h2></div><button class="link-button danger" id="clearCart" type="button">Limpar</button></div>
+      <div class="cart-items" id="cartItems"></div><div class="cart-empty" id="cartEmpty">Seu pedido ainda está vazio.</div>
+      <div class="checkout-divider"></div>
+      <section class="delivery-section">
+        <span class="mini-title">CADASTRO DE ENTREGA</span><h3>Onde devemos entregar?</h3>
+        <div class="auto-fill-note">Digite o CEP para preencher rua, bairro, cidade e UF automaticamente.</div>
+        <div class="form-grid">
+          <label>Nome<input id="customerName" type="text" autocomplete="name"></label>
+          <label>Telefone<input id="customerPhone" type="tel" autocomplete="tel"></label>
+          <label>CEP<div class="field-inline"><input id="deliveryCep" type="text" inputmode="numeric" placeholder="00000-000"><button class="btn btn-secondary small-btn" id="lookupCep" type="button">Buscar</button></div></label>
+          <label>UF<input id="deliveryState" type="text" maxlength="2"></label>
+          <label>Cidade<input id="deliveryCity" type="text"></label>
+          <label class="span-2">Rua / Avenida<input id="deliveryStreet" type="text"></label>
+          <label>Número<input id="deliveryNumber" type="text"></label>
+          <label>Complemento<input id="deliveryComplement" type="text"></label>
+          <label class="span-2">Bairro<input id="deliveryNeighborhood" type="text"></label>
+          <label class="span-2">Ponto de referência<input id="deliveryReference" type="text"></label>
+        </div>
+        <div class="delivery-actions"><button class="btn btn-dark" id="checkDelivery" type="button">Verificar entrega e taxa</button><div class="delivery-status neutral" id="deliveryStatus">Informe o endereço para consultar.</div></div>
+      </section>
+      <div class="order-summary" id="orderSummary"></div>
+      <div class="checkout-actions"><button class="btn btn-primary full" id="finishOrder" type="button" disabled>Finalizar pedido no WhatsApp</button><p class="checkout-help" id="checkoutHelp"></p></div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="config.js"></script>
+  <script src="data-service.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
