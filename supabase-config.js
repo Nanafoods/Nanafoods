@@ -11,6 +11,6 @@
   NUNCA coloque service_role/secret key neste arquivo.
 */
 window.SUPABASE_CONFIG = {
-  url: "",
-  publishableKey: ""
+  url: "https://jeavnzzluhsroqstqwio.supabase.co",
+  publishableKey: "sb_publishable_mey_Ojt0eRvkYmfLSpz5GQ_3wpQlUZg"
 };
