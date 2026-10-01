@@ -28,7 +28,7 @@ window.NANAS_CONFIG = {
   storeHours: [],
 
   menu: [
-    { id:"Refri", name:"REfri230ml", ingredients:"consulte sabores disponivéis", price:2.50, image:"assets/refri230ml.jpg", available:true, soldOut:false },
+    { id:"Refri", name:"REfri230ml", ingredients:"consulte sabores disponivéis", price:2.50, image:"assets/refri230ml.jpeg", available:true, soldOut:false },
     { id:"tradicional", name:"Hot dog simples", ingredients:"01 salsicha, molho, milho, queijo ralado, ketchup, maionese, mostarda, batata palha e barbecue.", price:5.00, image:"assets/doguinho.jpg", available:true, soldOut:false },
     { id:"tradicional-duplo", name:"Hot dog duplo", ingredients:"02 salsichas, molho, milho, queijo ralado, ketchup, maionese, mostarda, batata palha e barbecue.", price:6.00, image:"assets/doguinho.jpg", available:true, soldOut:false },
     { id:"bolonhesa", name:"Hot dog bolonhesa", ingredients:"01 salsicha, molho, milho, queijo ralado, ketchup, maionese, mostarda, batata palha, carne moída e barbecue.", price:6.50, image:"assets/doguinho.jpg", available:true, soldOut:false },
