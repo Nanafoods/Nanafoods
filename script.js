@@ -15,8 +15,51 @@ function renderCondiments(){$("#condimentsGrid").innerHTML=(config.condiments||[
 function renderAddons(){$("#addonsGrid").innerHTML=(config.addons||[]).filter(a=>a.active!==false).map(a=>`<label class="addon-option"><input type="checkbox" value="${a.id}"><span><b>${a.name}</b><small>${money(a.price)}</small></span></label>`).join("")}
 function openModal(id){$("#"+id).classList.add('open');document.body.classList.add('modal-open')}
 function closeModal(id){$("#"+id).classList.remove('open');if(!$('.modal.open'))document.body.classList.remove('modal-open')}
-function openItemModal(id){if(!state.storeOpen)return alert('A loja está fechada no momento.');const p=config.menu.find(x=>x.id===id);if(!p||p.soldOut)return;state.selectedProductId=id;$("#itemModalTitle").textContent=p.name;$("#itemModalIngredients").textContent=p.ingredients||'';$("#itemPrice").textContent=money(p.price);$("#itemQty").value=1;$("#itemNote").value='';$$('#condimentsGrid input,#addonsGrid input').forEach(i=>i.checked=false);openModal('itemModal')}
-function addSelectedItemToCart(){if(!state.storeOpen)return;const p=config.menu.find(x=>x.id===state.selectedProductId);if(!p)return;const qty=Math.max(1,Number($("#itemQty").value||1));const condiments=$$('#condimentsGrid input:checked').map(i=>config.condiments.find(c=>c.id===i.value)).filter(Boolean).map(c=>({id:c.id,name:c.name}));const addons=$$('#addonsGrid input:checked').map(i=>config.addons.find(a=>a.id===i.value)).filter(Boolean).map(a=>({id:a.id,name:a.name,price:a.price}));state.cart.push({uid:`${Date.now()}-${Math.random()}`,productId:p.id,name:p.name,price:p.price,qty,condiments,addons,note:$("#itemNote").value.trim()});saveCart();closeModal('itemModal');openModal('cartModal')}
+function openItemModal(id){
+  if(!state.storeOpen)return alert('A loja está fechada no momento.');
+  const p=config.menu.find(x=>x.id===id);
+  if(!p||p.soldOut)return;
+  state.selectedProductId=id;
+  $("#itemModalTitle").textContent=p.name;
+  $("#itemModalIngredients").textContent=p.ingredients||'';
+  $("#itemPrice").textContent=money(p.price);
+  $("#itemNote").value='';
+  $$('#condimentsGrid input,#addonsGrid input').forEach(i=>i.checked=false);
+  openModal('itemModal');
+}
+function addSelectedItemToCart(){
+  if(!state.storeOpen)return;
+
+  const p=config.menu.find(x=>x.id===state.selectedProductId);
+  if(!p)return;
+
+  const condiments=$$('#condimentsGrid input:checked')
+    .map(i=>config.condiments.find(c=>c.id===i.value))
+    .filter(Boolean)
+    .map(c=>({id:c.id,name:c.name}));
+
+  const addons=$$('#addonsGrid input:checked')
+    .map(i=>config.addons.find(a=>a.id===i.value))
+    .filter(Boolean)
+    .map(a=>({id:a.id,name:a.name,price:a.price}));
+
+  state.cart.push({
+    uid:(typeof crypto!=="undefined"&&crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random()}`,
+    productId:p.id,
+    name:p.name,
+    price:p.price,
+    qty:1,
+    condiments,
+    addons,
+    note:$("#itemNote").value.trim()
+  });
+
+  saveCart();
+  closeModal('itemModal');
+  openModal('cartModal');
+}
 function lineTotal(i){i.addons=i.addons||[];if(typeof i.price!=="number")return null;if(i.addons.some(a=>typeof a.price!=="number"))return null;return(i.price+i.addons.reduce((s,a)=>s+a.price,0))*i.qty}
 function cartSubtotal(){if(!state.cart.length)return 0;const t=state.cart.map(lineTotal);return t.some(v=>v===null)?null:t.reduce((a,b)=>a+b,0)}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
@@ -36,5 +79,9 @@ function updateCheckoutState(){const b=$("#finishOrder"),h=$("#checkoutHelp");co
 function buildMessage(){const f=getDeliveryForm(),sub=cartSubtotal();const lines=state.cart.map((i,n)=>{const c=(i.condiments||[]).length?(i.condiments||[]).map(x=>x.name).join(', '):'nenhum',a=(i.addons||[]).length?`\n   Adicionais: ${i.addons.map(x=>x.name).join(', ')}`:'',o=i.note?`\n   Observação: ${i.note}`:'';return `${n+1}. ${i.qty}x ${i.name} — ${money(lineTotal(i))}\n   Condimentos: ${c}${a}${o}`}).join('\n\n');const total=typeof sub==='number'&&typeof state.delivery?.fee==='number'?sub+state.delivery.fee:null;return [`Olá! Quero fazer este pedido na Nana's Food:`,``,lines,``,`ENTREGA`,`Cliente: ${f.customerName}`,`Telefone: ${f.customerPhone}`,`Endereço: ${f.deliveryStreet}, ${f.deliveryNumber}${f.deliveryComplement?' - '+f.deliveryComplement:''}`,`Bairro: ${f.deliveryNeighborhood}`,`Cidade/UF: ${f.deliveryCity}${f.deliveryState?' - '+f.deliveryState:''}`,f.deliveryCep?`CEP: ${f.deliveryCep}`:'',f.deliveryReference?`Referência: ${f.deliveryReference}`:'',state.delivery?.distanceKm?`Distância aprox.: ${state.delivery.distanceKm.toFixed(2)} km`:'',`Taxa: ${money(state.delivery?.fee)}`,`Total: ${money(total)}`].filter(Boolean).join('\n')}
 function finishOrder(){if($("#finishOrder").disabled)return;saveProfile();window.open(whatsappUrl(buildMessage()),'_blank')}
 async function loadRemote(){if(!window.NanasData?.enabled)return;try{const d=await window.NanasData.loadPublicData();if(!d)return;if(d.menu?.length)config.menu=d.menu;if(d.futureMenu)config.futureMenu=d.futureMenu;if(d.addons)config.addons=d.addons;if(d.condiments)config.condiments=d.condiments;if(d.storeSettings)config.storeSettings=d.storeSettings;if(d.storeHours)config.storeHours=d.storeHours;if(d.storeLocation)config.storeLocation={...config.storeLocation,...d.storeLocation};if(d.deliveryRules)config.deliveryRules={...config.deliveryRules,...d.deliveryRules};state.storeCoords=null;renderMenu();renderCondiments();renderAddons();prepareStoreCoords()}catch(e){console.error('Supabase:',e)}}
-function initEvents(){$('.menu-toggle').addEventListener('click',()=>$('.nav').classList.toggle('open'));$$('.nav a').forEach(a=>a.addEventListener('click',()=>$('.nav').classList.remove('open')));['openCart','openCartInline','openCartBanner','openCartContact','floatingCart'].forEach(id=>$('#'+id).addEventListener('click',()=>openModal('cartModal')));$$('[data-close-modal]').forEach(e=>e.addEventListener('click',()=>closeModal(e.dataset.closeModal)));$('#addToCart').addEventListener('click',addSelectedItemToCart);$('#lookupCep').addEventListener('click',lookupCep);$('#checkDelivery').addEventListener('click',checkDelivery);$('#finishOrder').addEventListener('click',finishOrder);$('#deliveryCep').addEventListener('blur',()=>{if($('#deliveryCep').value.replace(/\D/g,'').length===8)lookupCep()});$('#clearCart').addEventListener('click',()=>{state.cart=[];state.delivery=null;saveCart()});['customerName','customerPhone','deliveryCep','deliveryState','deliveryCity','deliveryStreet','deliveryNumber','deliveryComplement','deliveryNeighborhood','deliveryReference'].forEach(id=>$('#'+id).addEventListener('input',()=>{if(['deliveryCep','deliveryState','deliveryCity','deliveryStreet','deliveryNumber','deliveryNeighborhood'].includes(id))state.delivery=null;updateCheckoutState()}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>closeModal(m.id))})}
+function initEvents(){$('.menu-toggle').addEventListener('click',()=>$('.nav').classList.toggle('open'));$$('.nav a').forEach(a=>a.addEventListener('click',()=>$('.nav').classList.remove('open')));['openCart','openCartInline','openCartBanner','openCartContact','floatingCart'].forEach(id=>$('#'+id).addEventListener('click',()=>openModal('cartModal')));$$('[data-close-modal]').forEach(e=>e.addEventListener('click',()=>closeModal(e.dataset.closeModal)));$('#addToCart').addEventListener('click',addSelectedItemToCart);
+$('#continueShopping').addEventListener('click',()=>{
+  closeModal('cartModal');
+  document.querySelector('#cardapio').scrollIntoView({behavior:'smooth'});
+});$('#lookupCep').addEventListener('click',lookupCep);$('#checkDelivery').addEventListener('click',checkDelivery);$('#finishOrder').addEventListener('click',finishOrder);$('#deliveryCep').addEventListener('blur',()=>{if($('#deliveryCep').value.replace(/\D/g,'').length===8)lookupCep()});$('#clearCart').addEventListener('click',()=>{state.cart=[];state.delivery=null;saveCart()});['customerName','customerPhone','deliveryCep','deliveryState','deliveryCity','deliveryStreet','deliveryNumber','deliveryComplement','deliveryNeighborhood','deliveryReference'].forEach(id=>$('#'+id).addEventListener('input',()=>{if(['deliveryCep','deliveryState','deliveryCity','deliveryStreet','deliveryNumber','deliveryNeighborhood'].includes(id))state.delivery=null;updateCheckoutState()}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>closeModal(m.id))})}
 async function init(){$$('.instagram-link').forEach(a=>a.href=config.instagramUrl);loadProfile();initEvents();updateCartCounters();renderMenu();renderCondiments();renderAddons();renderCart();await loadRemote();if(window.NanasData?.enabled){window.NanasData.subscribePublicChanges(()=>loadRemote());setInterval(loadRemote,30000)}setInterval(applyStoreStatus,30000)}init();
