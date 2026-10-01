@@ -96,7 +96,10 @@
       <button class="modal-close" type="button" data-close-modal="itemModal">×</button>
       <span class="mini-title">PERSONALIZE SEU LANCHE</span>
       <h2 id="itemModalTitle">Produto</h2><p class="modal-ingredients" id="itemModalIngredients"></p>
-      <div class="form-row two"><label>Quantidade<input id="itemQty" type="number" min="1" max="20" value="1"></label><div class="price-note"><span>Preço</span><strong id="itemPrice">A confirmar</strong></div></div>
+      <div class="form-row two">
+        <div class="auto-fill-note">Cada unidade é personalizada separadamente.</div>
+        <div class="price-note"><span>Preço da unidade</span><strong id="itemPrice">A confirmar</strong></div>
+      </div>
       <fieldset class="condiments-fieldset"><legend>Condimentos</legend><p class="fieldset-help">Marque somente os condimentos que deseja.</p><div class="condiments-grid" id="condimentsGrid"></div></fieldset>
       <fieldset class="addons-fieldset"><legend>Adicionais</legend><div class="addons-grid" id="addonsGrid"></div></fieldset>
       <label class="field-block">Observação do cliente<textarea id="itemNote" rows="4" maxlength="300" placeholder="Ex.: sem milho, caprichar no molho..."></textarea></label>
@@ -109,7 +112,9 @@
     <section class="modal-panel cart-modal-panel">
       <button class="modal-close" type="button" data-close-modal="cartModal">×</button>
       <div class="cart-header"><div><span class="mini-title">SEU PEDIDO</span><h2>Confira antes de enviar</h2></div><button class="link-button danger" id="clearCart" type="button">Limpar</button></div>
-      <div class="cart-items" id="cartItems"></div><div class="cart-empty" id="cartEmpty">Seu pedido ainda está vazio.</div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-empty" id="cartEmpty">Seu pedido ainda está vazio.</div>
+      <button class="btn btn-secondary full" id="continueShopping" type="button">+ Adicionar outro item</button>
       <div class="checkout-divider"></div>
       <section class="delivery-section">
         <span class="mini-title">CADASTRO DE ENTREGA</span><h3>Onde devemos entregar?</h3>
