@@ -48,9 +48,9 @@
             <a class="btn btn-secondary instagram-link" href="#" target="_blank" rel="noopener">Ver Instagram</a>
           </div>
           <div class="benefits">
-            <div><strong>🚚</strong><span>Entrega sob<br>consulta</span></div>
+            <div><strong>🚚</strong><span>Entrega com<br>consulta por CEP</span></div>
             <div><strong>♥</strong><span>Feito com<br>carinho</span></div>
-            <div><strong>★</strong><span>Região de entrega<br>a confirmar</span></div>
+            <div><strong>★</strong><span>Raio de até<br>4,5 km</span></div>
           </div>
         </div>
         <div class="hero-card">
@@ -77,7 +77,7 @@
 
     <section class="section about" id="sobre">
       <div class="about-photo"><img src="assets/doguinho.jpg" alt="Hot dog Nana's Food"></div>
-      <div class="about-copy"><span class="mini-title">SOBRE A NANA'S</span><h2>Delivery com <em>gosto caseiro</em></h2><p>A Nana's Food foi pensada para entregar um cachorro-quente caprichado, com cuidado do preparo à embalagem. A disponibilidade e a taxa de entrega são confirmadas pelo atendimento após o envio do pedido.</p></div>
+      <div class="about-copy"><span class="mini-title">SOBRE A NANA'S</span><h2>Delivery com <em>gosto caseiro</em></h2><p>A Nana's Food foi pensada para entregar um cachorro-quente caprichado, com cuidado do preparo à embalagem. O raio de 4,5 km ajuda a preservar a qualidade do lanche até a chegada.</p></div>
     </section>
 
     <section class="section contact-grid" id="contato">
@@ -117,19 +117,21 @@
       <button class="btn btn-secondary full" id="continueShopping" type="button">+ Adicionar outro item</button>
       <div class="checkout-divider"></div>
       <section class="delivery-section">
-        <span class="mini-title">ENDEREÇO DE ENTREGA</span><h3>Onde devemos entregar?</h3>
-        <div class="auto-fill-note">Informe seu endereço. A disponibilidade e a taxa de entrega serão confirmadas pelo atendimento no WhatsApp.</div>
+        <span class="mini-title">CADASTRO DE ENTREGA</span><h3>Onde devemos entregar?</h3>
+        <div class="auto-fill-note">Digite o CEP para preencher rua, bairro, cidade e UF automaticamente.</div>
         <div class="form-grid">
           <label>Nome<input id="customerName" type="text" autocomplete="name"></label>
           <label>Telefone<input id="customerPhone" type="tel" autocomplete="tel"></label>
-          <label>Cidade<input id="deliveryCity" type="text" autocomplete="address-level2"></label>
-          <label class="span-2">Rua / Avenida<input id="deliveryStreet" type="text" autocomplete="address-line1"></label>
+          <label>CEP<div class="field-inline"><input id="deliveryCep" type="text" inputmode="numeric" placeholder="00000-000"><button class="btn btn-secondary small-btn" id="lookupCep" type="button">Buscar</button></div></label>
+          <label>UF<input id="deliveryState" type="text" maxlength="2"></label>
+          <label>Cidade<input id="deliveryCity" type="text"></label>
+          <label class="span-2">Rua / Avenida<input id="deliveryStreet" type="text"></label>
           <label>Número<input id="deliveryNumber" type="text"></label>
-          <label>Complemento<input id="deliveryComplement" type="text" autocomplete="address-line2"></label>
+          <label>Complemento<input id="deliveryComplement" type="text"></label>
           <label class="span-2">Bairro<input id="deliveryNeighborhood" type="text"></label>
           <label class="span-2">Ponto de referência<input id="deliveryReference" type="text"></label>
         </div>
-        <div class="delivery-status neutral">Entrega e taxa sujeitas à confirmação do atendimento.</div>
+        <div class="delivery-actions"><button class="btn btn-dark" id="checkDelivery" type="button">Verificar entrega e taxa</button><div class="delivery-status neutral" id="deliveryStatus">Informe o endereço para consultar.</div></div>
       </section>
       <div class="order-summary" id="orderSummary"></div>
       <div class="checkout-actions"><button class="btn btn-primary full" id="finishOrder" type="button" disabled>Finalizar pedido no WhatsApp</button><p class="checkout-help" id="checkoutHelp"></p></div>
@@ -143,4 +145,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
